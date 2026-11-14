@@ -238,3 +238,125 @@ else:
             st.warning(
                 "No valid measurements available for this participant and indicator."
             )
+            st.divider()
+
+st.subheader("🎯 CBC Reference Range Analysis")
+
+st.caption(
+    "Comparison against the reference ranges supplied in the original dataset. "
+    "This is descriptive analysis, not a medical diagnosis."
+)
+
+# Build indicator list from actual dataset columns
+reference_indicators = {}
+
+for column in df.columns:
+    if "_value_" not in column:
+        continue
+
+    if column == "hemoglobin_value_percent":
+        continue
+
+    min_column = column.replace("_value_", "_range_min_")
+    max_column = column.replace("_value_", "_range_max_")
+
+    if min_column in df.columns and max_column in df.columns:
+        label = column.replace("_value_", "").replace("_", " ").title()
+        reference_indicators[label] = (
+            column, min_column, max_column
+        )
+
+if reference_indicators:
+
+    selected_range_indicator = st.selectbox(
+        "Select CBC Indicator",
+        list(reference_indicators.keys()),
+        key="cbc_reference_indicator"
+    )
+
+    value_col, min_col, max_col = reference_indicators[
+        selected_range_indicator
+    ]
+
+    range_data = df.copy()
+
+    range_data[value_col] = pd.to_numeric(
+        range_data[value_col], errors="coerce"
+    )
+
+    range_data[min_col] = pd.to_numeric(
+        range_data[min_col], errors="coerce"
+    )
+
+    range_data[max_col] = pd.to_numeric(
+        range_data[max_col], errors="coerce"
+    )
+
+    def classify_range(row):
+        value = row[value_col]
+        lower = row[min_col]
+        upper = row[max_col]
+
+        if pd.isna(value) or pd.isna(lower) or pd.isna(upper):
+            return "Not Assessed"
+
+        if value < lower:
+            return "Below Range"
+
+        if value > upper:
+            return "Above Range"
+
+        return "Within Range"
+
+    range_data["Range Status"] = range_data.apply(
+        classify_range, axis=1
+    )
+
+    status_counts = range_data["Range Status"].value_counts()
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    col1.metric(
+        "Below Range",
+        int(status_counts.get("Below Range", 0))
+    )
+
+    col2.metric(
+        "Within Range",
+        int(status_counts.get("Within Range", 0))
+    )
+
+    col3.metric(
+        "Above Range",
+        int(status_counts.get("Above Range", 0))
+    )
+
+    col4.metric(
+        "Not Assessed",
+        int(status_counts.get("Not Assessed", 0))
+    )
+
+    display_columns = [
+        "Sample Name",
+        value_col,
+        min_col,
+        max_col,
+        "Range Status"
+    ]
+
+    st.subheader("Measurement Classification")
+
+    st.dataframe(
+        range_data[display_columns],
+        use_container_width=True
+    )
+
+else:
+    st.warning("No matching reference range columns were found.")
+
+st.info(
+    "Range classifications use the dataset-provided limits only. "
+    "Values outside those limits are flags for review, not diagnoses. "
+    "Hemoglobin is excluded pending verification of its unit in the "
+    "original NASA metadata."
+)
