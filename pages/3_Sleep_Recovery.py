@@ -117,3 +117,143 @@ st.info(
     "This dataset comes from a ground-based bed-rest study, "
     "not from astronauts during spaceflight."
 )
+st.divider()
+
+st.subheader("🧠 Sleep Insights")
+
+st.caption(
+    "Descriptive analysis of sleep patterns in the ground-based bed-rest study."
+)
+
+duration_data = df.dropna(subset=["Duration_hours"]).copy()
+efficiency_data = df.dropna(subset=["Sleep Efficiency (%)"]).copy()
+
+missing_duration = df["Duration_hours"].isna().sum()
+missing_efficiency = df["Sleep Efficiency (%)"].isna().sum()
+missing_latency = df["Latency_hours"].isna().sum()
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.metric("Missing Duration Records", missing_duration)
+
+with col2:
+    st.metric("Missing Efficiency Records", missing_efficiency)
+
+with col3:
+    st.metric("Missing Latency Records", missing_latency)
+
+
+def describe_trend(data, column, tolerance):
+    if data.empty or "BR_Day" not in data.columns:
+        return "Not enough data to assess the trend."
+
+    changes = []
+
+    for subject in data["Subject"].dropna().unique():
+        person = data[data["Subject"] == subject].copy()
+        person["BR_Day_numeric"] = pd.to_numeric(
+            person["BR_Day"], errors="coerce"
+        )
+        person = person.dropna(
+            subset=["BR_Day_numeric", column]
+        ).sort_values("BR_Day_numeric")
+
+        if len(person) >= 2:
+            change = person.iloc[-1][column] - person.iloc[0][column]
+            changes.append(change)
+
+    if not changes:
+        return "Not enough valid records for comparison."
+
+    average_change = sum(changes) / len(changes)
+
+    if average_change > tolerance:
+        direction = "increased"
+    elif average_change < -tolerance:
+        direction = "decreased"
+    else:
+        direction = "remained relatively stable"
+
+    return (
+        f"Across participants, the average first-to-last change "
+        f"{direction} by {abs(average_change):.2f}."
+    )
+
+
+st.markdown("**Sleep Duration**")
+st.write(describe_trend(duration_data, "Duration_hours", 0.10))
+
+st.markdown("**Sleep Efficiency**")
+st.write(describe_trend(efficiency_data, "Sleep Efficiency (%)", 1.0))
+
+st.info(
+    "These insights describe changes between the first and last available "
+    "records for each participant. They are not medical assessments or "
+    "predictions of astronaut health."
+)
+st.divider()
+def analyze_participants(data, column, tolerance):
+    results = []
+
+    for subject in data["Subject"].dropna().unique():
+        person = data[data["Subject"] == subject].copy()
+
+        person["BR_Day_numeric"] = pd.to_numeric(
+            person["BR_Day"], errors="coerce"
+        )
+
+        person = person.dropna(
+            subset=["BR_Day_numeric", column]
+        ).sort_values("BR_Day_numeric")
+
+        if len(person) < 2:
+            continue
+
+        change = person.iloc[-1][column] - person.iloc[0][column]
+
+        if change > tolerance:
+            status = "Increased"
+        elif change < -tolerance:
+            status = "Decreased"
+        else:
+            status = "Stable"
+
+        results.append({
+            "Participant": subject,
+            "Change": round(change, 2),
+            "Status": status
+        })
+
+    return pd.DataFrame(results)
+st.subheader("👥 Participant-Level Sleep Changes")
+
+duration_results = analyze_participants(
+    duration_data, "Duration_hours", 0.10
+)
+
+efficiency_results = analyze_participants(
+    efficiency_data, "Sleep Efficiency (%)", 1.0
+)
+
+for title, results in [
+    ("Sleep Duration Changes", duration_results),
+    ("Sleep Efficiency Changes", efficiency_results)
+]:
+    st.markdown(f"**{title}**")
+
+    if results.empty:
+        st.warning("Not enough data to compare participants.")
+        continue
+
+    increased = (results["Status"] == "Increased").sum()
+    decreased = (results["Status"] == "Decreased").sum()
+    stable = (results["Status"] == "Stable").sum()
+
+    col1, col2, col3 = st.columns(3)
+
+    col1.metric("Increased", int(increased))
+    col2.metric("Decreased", int(decreased))
+    col3.metric("Stable", int(stable))
+
+    st.dataframe(results, use_container_width=True)
