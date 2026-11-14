@@ -6,6 +6,84 @@ st.set_page_config(
     layout="wide"
 )
 
+from core.navigation import render_navigation
+render_navigation()
+# ASTRA_UNIFIED_THEME_V1
+st.markdown("""
+<style>
+.stApp {
+    background: linear-gradient(145deg, #050D1A 0%, #09182D 55%, #102747 100%) !important;
+    color: #EAF4FF !important;
+}
+section.main > div.block-container {
+    max-width: 1450px !important;
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+}
+h1 {
+    color: #F4FAFF !important;
+    font-weight: 850 !important;
+    letter-spacing: -0.8px !important;
+    margin-bottom: 1.2rem !important;
+}
+h2, h3 {
+    color: #65DDF5 !important;
+    font-weight: 750 !important;
+    margin-top: 1.5rem !important;
+}
+p, label, [data-testid="stCaptionContainer"] {
+    color: #D1E2F5 !important;
+}
+[data-testid="stMetric"] {
+    background: linear-gradient(145deg, #112B49, #16385D) !important;
+    border: 1px solid #28618A !important;
+    border-radius: 16px !important;
+    padding: 18px !important;
+}
+[data-testid="stMetricValue"] {
+    color: #66E4F5 !important;
+    font-weight: 800 !important;
+}
+[data-testid="stVerticalBlockBorderWrapper"],
+[data-testid="stDataFrame"],
+[data-testid="stTable"] {
+    border: 1px solid #285477 !important;
+    border-radius: 15px !important;
+    overflow: hidden !important;
+}
+.stButton > button {
+    background: linear-gradient(110deg, #1266A8, #087FAD) !important;
+    color: white !important;
+    border: 1px solid #43CBEA !important;
+    border-radius: 11px !important;
+    font-weight: 750 !important;
+    min-height: 44px !important;
+}
+.stButton > button:hover {
+    border-color: #8CEEFF !important;
+    color: white !important;
+    transform: translateY(-1px);
+}
+[data-testid="stTextInput"] input,
+[data-testid="stNumberInput"] input,
+[data-testid="stSelectbox"] > div,
+[data-testid="stTextArea"] textarea,
+[data-testid="stTimeInput"] input {
+    border-radius: 10px !important;
+}
+hr {
+    border-color: #285477 !important;
+    margin: 1.7rem 0 !important;
+}
+[data-testid="collapsedControl"],
+[data-testid="stSidebarCollapsedControl"] {
+    display: none !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+
 st.title("🚀 EVA Mission Setup")
 st.caption("Configure mission requirements before scenario evaluation.")
 
@@ -159,3 +237,81 @@ if st.button("💾 Save Mission Configuration", use_container_width=True):
 
         st.subheader("Mission Configuration Summary")
         st.json(st.session_state["mission_config"])
+
+
+# ASTRA_MISSION_PREMIUM_STYLE
+st.markdown("""
+<style>
+.stApp {
+    background: linear-gradient(145deg, #07111F 0%, #0B1930 55%, #101F38 100%);
+    color: #EAF4FF;
+}
+.block-container {
+    max-width: 1250px;
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+}
+h1, h2, h3 {
+    color: #F4F9FF !important;
+    letter-spacing: -0.4px;
+}
+h1 {
+    font-size: 2.25rem !important;
+    font-weight: 800 !important;
+}
+h2 {
+    font-size: 1.5rem !important;
+}
+h3 {
+    font-size: 1.15rem !important;
+}
+p, label, .stMarkdown {
+    color: #C5D5E8;
+}
+div[data-testid="stTextInput"],
+div[data-testid="stNumberInput"],
+div[data-testid="stSelectbox"],
+div[data-testid="stMultiSelect"],
+div[data-testid="stTimeInput"],
+div[data-testid="stTextArea"] {
+    background: rgba(18, 41, 67, .55);
+    border: 1px solid #294765;
+    border-radius: 12px;
+    padding: 7px;
+}
+div[data-testid="stAlert"] {
+    border-radius: 13px;
+    border: 1px solid #294765;
+}
+.stButton > button {
+    background: linear-gradient(110deg, #1677B8, #16A6C5);
+    color: white;
+    border: 1px solid #42CBEA;
+    border-radius: 11px;
+    font-weight: 700;
+    min-height: 46px;
+}
+hr {
+    border-color: #294765;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+# ASTRA_MISSION_HEADER_SPACING_V2
+st.markdown("""
+<style>
+section.main > div.block-container {
+    padding-top: 5rem !important;
+    padding-bottom: 3rem !important;
+}
+.main .block-container h1 {
+    display: block !important;
+    margin-top: 1rem !important;
+    padding-top: 0.75rem !important;
+    line-height: 1.4 !important;
+    overflow: visible !important;
+    clip-path: none !important;
+}
+</style>
+""", unsafe_allow_html=True)

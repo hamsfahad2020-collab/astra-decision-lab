@@ -8,6 +8,144 @@ st.set_page_config(
     layout="wide"
 )
 
+from core.navigation import render_navigation
+render_navigation()
+# ASTRA_UNIFIED_THEME_V1
+st.markdown("""
+<style>
+.stApp {
+    background: linear-gradient(145deg, #050D1A 0%, #09182D 55%, #102747 100%) !important;
+    color: #EAF4FF !important;
+}
+section.main > div.block-container {
+    max-width: 1450px !important;
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+}
+h1 {
+    color: #F4FAFF !important;
+    font-weight: 850 !important;
+    letter-spacing: -0.8px !important;
+    margin-bottom: 1.2rem !important;
+}
+h2, h3 {
+    color: #65DDF5 !important;
+    font-weight: 750 !important;
+    margin-top: 1.5rem !important;
+}
+p, label, [data-testid="stCaptionContainer"] {
+    color: #D1E2F5 !important;
+}
+[data-testid="stMetric"] {
+    background: linear-gradient(145deg, #112B49, #16385D) !important;
+    border: 1px solid #28618A !important;
+    border-radius: 16px !important;
+    padding: 18px !important;
+}
+[data-testid="stMetricValue"] {
+    color: #66E4F5 !important;
+    font-weight: 800 !important;
+}
+[data-testid="stVerticalBlockBorderWrapper"],
+[data-testid="stDataFrame"],
+[data-testid="stTable"] {
+    border: 1px solid #285477 !important;
+    border-radius: 15px !important;
+    overflow: hidden !important;
+}
+.stButton > button {
+    background: linear-gradient(110deg, #1266A8, #087FAD) !important;
+    color: white !important;
+    border: 1px solid #43CBEA !important;
+    border-radius: 11px !important;
+    font-weight: 750 !important;
+    min-height: 44px !important;
+}
+.stButton > button:hover {
+    border-color: #8CEEFF !important;
+    color: white !important;
+    transform: translateY(-1px);
+}
+[data-testid="stTextInput"] input,
+[data-testid="stNumberInput"] input,
+[data-testid="stSelectbox"] > div,
+[data-testid="stTextArea"] textarea,
+[data-testid="stTimeInput"] input {
+    border-radius: 10px !important;
+}
+hr {
+    border-color: #285477 !important;
+    margin: 1.7rem 0 !important;
+}
+[data-testid="collapsedControl"],
+[data-testid="stSidebarCollapsedControl"] {
+    display: none !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+
+st.markdown("""
+<style>
+@keyframes astraDashboardEnter {
+    0% {
+        opacity: 0;
+        transform: translateX(90px);
+        filter: blur(5px);
+    }
+    65% {
+        opacity: 1;
+        filter: blur(0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+        filter: blur(0);
+    }
+}
+
+@keyframes astraLightSweep {
+    0% {
+        transform: translateX(120vw) skewX(-18deg);
+        opacity: 0;
+    }
+    15% { opacity: .9; }
+    75% { opacity: .65; }
+    100% {
+        transform: translateX(-35vw) skewX(-18deg);
+        opacity: 0;
+    }
+}
+
+.main .block-container {
+    animation: astraDashboardEnter 1.05s cubic-bezier(.2,.75,.25,1) both;
+}
+
+div[data-testid="stAppViewContainer"]::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 13vw;
+    height: 100vh;
+    z-index: 999999;
+    pointer-events: none;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(34, 223, 255, .12),
+        rgba(85, 232, 255, .85),
+        rgba(34, 223, 255, .12),
+        transparent
+    );
+    filter: blur(9px);
+    animation: astraLightSweep 1.05s ease-out .08s both;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
 CBC_PATH = Path("data/raw/LSDS-7_Complete_Blood_Count_CBC_TRANSFORMED.csv")
 SLEEP_PATH = Path("data/raw/BRSMACT_Campaign_1_Actigraphy.csv")
 

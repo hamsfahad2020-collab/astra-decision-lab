@@ -8,6 +8,84 @@ st.set_page_config(
     layout="wide"
 )
 
+from core.navigation import render_navigation
+render_navigation()
+# ASTRA_UNIFIED_THEME_V1
+st.markdown("""
+<style>
+.stApp {
+    background: linear-gradient(145deg, #050D1A 0%, #09182D 55%, #102747 100%) !important;
+    color: #EAF4FF !important;
+}
+section.main > div.block-container {
+    max-width: 1450px !important;
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+}
+h1 {
+    color: #F4FAFF !important;
+    font-weight: 850 !important;
+    letter-spacing: -0.8px !important;
+    margin-bottom: 1.2rem !important;
+}
+h2, h3 {
+    color: #65DDF5 !important;
+    font-weight: 750 !important;
+    margin-top: 1.5rem !important;
+}
+p, label, [data-testid="stCaptionContainer"] {
+    color: #D1E2F5 !important;
+}
+[data-testid="stMetric"] {
+    background: linear-gradient(145deg, #112B49, #16385D) !important;
+    border: 1px solid #28618A !important;
+    border-radius: 16px !important;
+    padding: 18px !important;
+}
+[data-testid="stMetricValue"] {
+    color: #66E4F5 !important;
+    font-weight: 800 !important;
+}
+[data-testid="stVerticalBlockBorderWrapper"],
+[data-testid="stDataFrame"],
+[data-testid="stTable"] {
+    border: 1px solid #285477 !important;
+    border-radius: 15px !important;
+    overflow: hidden !important;
+}
+.stButton > button {
+    background: linear-gradient(110deg, #1266A8, #087FAD) !important;
+    color: white !important;
+    border: 1px solid #43CBEA !important;
+    border-radius: 11px !important;
+    font-weight: 750 !important;
+    min-height: 44px !important;
+}
+.stButton > button:hover {
+    border-color: #8CEEFF !important;
+    color: white !important;
+    transform: translateY(-1px);
+}
+[data-testid="stTextInput"] input,
+[data-testid="stNumberInput"] input,
+[data-testid="stSelectbox"] > div,
+[data-testid="stTextArea"] textarea,
+[data-testid="stTimeInput"] input {
+    border-radius: 10px !important;
+}
+hr {
+    border-color: #285477 !important;
+    margin: 1.7rem 0 !important;
+}
+[data-testid="collapsedControl"],
+[data-testid="stSidebarCollapsedControl"] {
+    display: none !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+
 st.title("📋 ASTRA Decision Report")
 st.caption(
     "Integrated mission, crew health and recovery decision summary."

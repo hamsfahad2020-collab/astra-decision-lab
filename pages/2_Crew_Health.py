@@ -4,6 +4,103 @@ from pathlib import Path
 
 st.set_page_config(page_title="Crew Health", page_icon="🧑‍🚀", layout="wide")
 
+from core.navigation import render_navigation
+render_navigation()
+# ASTRA_UNIFIED_THEME_V1
+st.markdown("""
+<style>
+.stApp {
+    background: linear-gradient(145deg, #050D1A 0%, #09182D 55%, #102747 100%) !important;
+    color: #EAF4FF !important;
+}
+section.main > div.block-container {
+    max-width: 1450px !important;
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+}
+h1 {
+    color: #F4FAFF !important;
+    font-weight: 850 !important;
+    letter-spacing: -0.8px !important;
+    margin-bottom: 1.2rem !important;
+}
+h2, h3 {
+    color: #65DDF5 !important;
+    font-weight: 750 !important;
+    margin-top: 1.5rem !important;
+}
+p, label, [data-testid="stCaptionContainer"] {
+    color: #D1E2F5 !important;
+}
+[data-testid="stMetric"] {
+    background: linear-gradient(145deg, #112B49, #16385D) !important;
+    border: 1px solid #28618A !important;
+    border-radius: 16px !important;
+    padding: 18px !important;
+}
+[data-testid="stMetricValue"] {
+    color: #66E4F5 !important;
+    font-weight: 800 !important;
+}
+[data-testid="stVerticalBlockBorderWrapper"],
+[data-testid="stDataFrame"],
+[data-testid="stTable"] {
+    border: 1px solid #285477 !important;
+    border-radius: 15px !important;
+    overflow: hidden !important;
+}
+.stButton > button {
+    background: linear-gradient(110deg, #1266A8, #087FAD) !important;
+    color: white !important;
+    border: 1px solid #43CBEA !important;
+    border-radius: 11px !important;
+    font-weight: 750 !important;
+    min-height: 44px !important;
+}
+.stButton > button:hover {
+    border-color: #8CEEFF !important;
+    color: white !important;
+    transform: translateY(-1px);
+}
+[data-testid="stTextInput"] input,
+[data-testid="stNumberInput"] input,
+[data-testid="stSelectbox"] > div,
+[data-testid="stTextArea"] textarea,
+[data-testid="stTimeInput"] input {
+    border-radius: 10px !important;
+}
+hr {
+    border-color: #285477 !important;
+    margin: 1.7rem 0 !important;
+}
+[data-testid="collapsedControl"],
+[data-testid="stSidebarCollapsedControl"] {
+    display: none !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+st.markdown("""
+<style>
+[data-testid="collapsedControl"],
+[data-testid="stSidebar"],
+[data-testid="stSidebarCollapsedControl"] {
+    display: none !important;
+}
+
+section.main > div.block-container {
+    padding-top: 3.2rem !important;
+    padding-bottom: 3rem !important;
+    max-width: 1450px !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+
+
+
 st.title("🧑‍🚀 Crew Health Monitoring")
 st.caption("NASA research data analysis — ASTRA Decision Lab")
 
@@ -105,12 +202,38 @@ else:
     st.warning("No matching columns found.")
     st.divider()
 
-st.subheader("📋 All CBC Column Names")
-
-for i, column in enumerate(df.columns, start=1):
-    st.write(f"{i}. {column}")
-    st.divider()
-
+with st.expander("📋 Browse CBC Indicator Catalog", expanded=False):
+    st.caption("Explore the original dataset fields, organized by category.")
+    categories = {
+        "🩸 Blood Cell Counts": ["red_blood", "white_blood", "platelet"],
+        "🧬 Hemoglobin & Red Cell Indices": ["hemoglobin", "hematocrit", "mcv", "mch", "mchc"],
+        "🛡️ White Cell Differential": ["neutrophil", "lymphocyte", "monocyte", "eosinophil", "basophil"],
+        "📊 Other Measurements": []
+    }
+    assigned = set()
+    for category, keywords in categories.items():
+        fields = [
+            col for col in df.columns
+            if any(word in col.lower() for word in keywords)
+            and col not in assigned
+        ]
+        if fields:
+            st.markdown(f"**{category} · {len(fields)} fields**")
+            cols = st.columns(2)
+            for i, field in enumerate(fields):
+                cols[i % 2].markdown(
+                    f"<div style='background:#122943;border:1px solid #294765;"
+                    f"border-radius:9px;padding:9px 12px;margin:4px 0;"
+                    f"color:#DCEBFA;font-size:12px;overflow-wrap:anywhere'>"
+                    f"{field}</div>",
+                    unsafe_allow_html=True
+                )
+            assigned.update(fields)
+    remaining = [col for col in df.columns if col not in assigned]
+    if remaining:
+        st.markdown(f"**📊 Other Measurements · {len(remaining)} fields**")
+        for field in remaining:
+            st.caption(field)
 st.subheader("🧪 Sample Names")
 
 st.write(df["Sample Name"].dropna().unique().tolist())
@@ -360,3 +483,84 @@ st.info(
     "Hemoglobin is excluded pending verification of its unit in the "
     "original NASA metadata."
 )
+
+
+# ASTRA_CREW_PREMIUM_STYLE
+st.markdown("""
+<style>
+.stApp {
+    background: linear-gradient(145deg, #07111F 0%, #0B1930 55%, #101F38 100%);
+    color: #EAF4FF;
+}
+.block-container {
+    max-width: 1250px;
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+}
+h1, h2, h3 {
+    color: #F4F9FF !important;
+    letter-spacing: -0.4px;
+}
+h1 {
+    font-size: 2.25rem !important;
+    font-weight: 800 !important;
+}
+h2 {
+    font-size: 1.5rem !important;
+    margin-top: 1.5rem !important;
+}
+h3 {
+    font-size: 1.15rem !important;
+}
+p, label, .stMarkdown {
+    color: #C5D5E8;
+}
+div[data-testid="stMetric"] {
+    background: linear-gradient(145deg, #122943, #102238);
+    border: 1px solid #294765;
+    border-radius: 16px;
+    padding: 18px 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,.16);
+}
+div[data-testid="stMetricLabel"] {
+    color: #9DB7D2 !important;
+}
+div[data-testid="stMetricValue"] {
+    color: #54DFFF !important;
+    font-weight: 750 !important;
+}
+div[data-testid="stMetricDelta"] {
+    color: #9BDCEB !important;
+}
+div[data-testid="stDataFrame"],
+div[data-testid="stTable"] {
+    border: 1px solid #294765;
+    border-radius: 13px;
+    overflow: hidden;
+}
+div[data-testid="stPlotlyChart"] {
+    background: rgba(16, 34, 56, .55);
+    border: 1px solid #294765;
+    border-radius: 16px;
+    padding: 8px;
+}
+div[data-testid="stAlert"] {
+    border-radius: 13px;
+    border: 1px solid #294765;
+}
+.stSelectbox, .stMultiSelect {
+    background: rgba(18, 41, 67, .65);
+    border-radius: 12px;
+}
+hr {
+    border-color: #294765;
+}
+.stButton > button {
+    background: linear-gradient(110deg, #1677B8, #16A6C5);
+    color: white;
+    border: 1px solid #42CBEA;
+    border-radius: 11px;
+    font-weight: 700;
+}
+</style>
+""", unsafe_allow_html=True)
