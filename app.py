@@ -353,7 +353,18 @@ modules = [
         "📋",
         "Decision Report",
         "Integrated decision summary and export."
-    )
+    ),
+
+    (
+        "📊",
+        "Daily Monitoring",
+        "Track daily crew health measurements and personal baselines."
+    ),
+    (
+        "🧠",
+        "Decision Lab",
+        "Compare current health, trends and EVA mission scenarios."
+    ),
 ]
 
 for start in range(0, len(modules), 3):
@@ -371,6 +382,17 @@ for start in range(0, len(modules), 3):
                 """,
                 unsafe_allow_html=True
             )
+            page_map = {
+                "Crew Health": "pages/2_Crew_Health.py",
+                "Sleep & Recovery": "pages/3_Sleep_Recovery.py",
+                "Mission Setup": "pages/4_Mission_Setup.py",
+                "Scenario Lab": "pages/5_Scenario_Lab.py",
+                "Decision Report": "pages/6_Decision_Report.py",
+                "Daily Monitoring": "pages/7_Daily_Health_Monitoring.py",
+                "Decision Lab": "pages/8_Decision_Lab.py",
+            }
+            if item[1] in page_map:
+                st.page_link(page_map[item[1]], label="Open module", icon="➡️")
 
 
 st.divider()

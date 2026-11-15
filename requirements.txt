@@ -6,4 +6,5 @@ scikit-learn
 scipy
 openpyxl
 supabase
-python-dotenvwebsockets==13.1
+python-dotenv
+websockets==13.1
