@@ -109,6 +109,7 @@ def render_navigation():
         ("pages/5_Scenario_Lab.py", "Scenario Lab"),
         ("pages/6_Decision_Report.py", "Decision Report"),
     ("pages/7_Daily_Health_Monitoring.py", "Daily Monitoring"),
+        ("pages/8_Decision_Lab.py", "Decision Lab"),
     ]
 
     columns = st.columns(8)
