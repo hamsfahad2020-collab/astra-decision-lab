@@ -108,10 +108,10 @@ def render_navigation():
         ("pages/4_Mission_Setup.py", "Mission Setup"),
         ("pages/5_Scenario_Lab.py", "Scenario Lab"),
         ("pages/6_Decision_Report.py", "Decision Report"),
-        ("app.py", "Launch"),
+    ("pages/7_Daily_Health_Monitoring.py", "Daily Monitoring"),
     ]
 
-    columns = st.columns(7)
+    columns = st.columns(8)
     for column, (page, label) in zip(columns, links):
         with column:
             st.page_link(page, label=label)
